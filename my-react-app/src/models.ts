@@ -2,6 +2,7 @@ export interface ITask {
     id: string;
     title: string;
     completed: boolean;
+    calories?: number;
 }
 
 export interface IBoard {
@@ -9,3 +10,4 @@ export interface IBoard {
     name: string;
     tasks: ITask[];
 }
+

@@ -1,24 +1,28 @@
-import React from 'react';
+// src/components/Board.tsx
+import React, { useState } from 'react';
 import { IBoard } from '../src/models.ts';
-import { Card, CardContent, Typography, List, ListItem, ListItemText, Checkbox } from '@mui/material';
+import TaskItem from '../src/components/TaskItem.tsx';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
 
-interface BoardProps {
-    board: IBoard;
-}
+const Board: React.FC<{ board: IBoard }> = ({ board }) => {
+    const [tasks, setTasks] = useState(board.tasks);
 
-const Board: React.FC<BoardProps> = ({ board }) => {
+    const handleUpdateTaskCalories = (id: string, calories: number) => {
+        setTasks(prevTasks =>
+            prevTasks.map(task => (task.id === id ? { ...task, calories } : task))
+        );
+    };
+
     return (
-        <Card style={{ margin: '20px', width: '300px' }}>
+        <Card>
             <CardContent>
-                <Typography variant="h5" component="h2">
-                    {board.name}
-                </Typography>
+                <Typography variant="h5">{board.name}</Typography>
                 <List>
-                    {board.tasks.map(task => (
-                        <ListItem key={task.id} dense button>
-                            <Checkbox edge="start" checked={task.completed} tabIndex={-1} disableRipple />
-                            <ListItemText primary={task.title} />
-                        </ListItem>
+                    {tasks.map(task => (
+                        <TaskItem key={task.id} task={task} onUpdate={handleUpdateTaskCalories} />
                     ))}
                 </List>
             </CardContent>
@@ -27,3 +31,5 @@ const Board: React.FC<BoardProps> = ({ board }) => {
 };
 
 export default Board;
+
+
